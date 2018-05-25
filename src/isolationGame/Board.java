@@ -3,14 +3,49 @@ package isolationGame;
 public class Board {
 
 	private char[][] board = new char[9][9];
-	private XPos xPlayer;
-	private OPos oPlayer;
+	private XPos xPlayer = new XPos();
+	private OPos oPlayer = new OPos();
 
 	public Board() {
 		popBoard();
 		startingPosition();
 	}
 	
+	/*
+	 * checks if there is a valid move for the
+	 * player based on true or false.
+	 * TRUE == X PLAYER
+	 * FALSE == O PLAYER
+	 */
+	public boolean isXValidMove(char row, int col, boolean player) {
+		int rowIndex = (int) (row - 64);
+		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
+		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
+		int dx, dy;
+		
+		if (xPos == rowIndex) {
+			dx = 0;
+		} else {
+			dx = (rowIndex - xPos) / Math.abs((rowIndex - xPos));
+		}
+		
+		if (yPos == rowIndex) {
+			dy = 0;
+		} else {
+			dy = (col - yPos) / Math.abs((col - yPos));
+		}
+		
+		while ((rowIndex != xPos) || (col != yPos)) {
+			xPos += dx;
+			yPos += dy;
+			if (isHole(xPos, yPos)) {
+				return false;
+			}
+		}	
+		return true;	
+	}
+
+
 
 	
 
@@ -45,7 +80,20 @@ public class Board {
 		}
 		return printBoard;
 	}
+	
 
+	/*
+	 * Checks if there is a hole at target
+	 * location
+	 */
+	private boolean isHole(int row, int col) {
+		if (board[row][col] == '#') {
+			return true;
+		}
+		return false;
+	}
+	
+	
 	/*
 	 * Populates the board and sets it to shown
 	 * as such in the project guidelines.
@@ -85,6 +133,15 @@ public class Board {
 		private int row;
 		private int col;
 		
+		
+		public int getRow() {
+			return row;
+		}
+		
+		public int getCol() {
+			return col;
+		}
+		
 		public void setRow(int row) {
 			this.row = row;
 		}
@@ -92,12 +149,22 @@ public class Board {
 		public void setCol(int col) {
 			this.col = col;
 		}
+		
+		
 	}
 	
 	private static class OPos  {
 		
 		private int row;
 		private int col;
+		
+		public int getRow() {
+			return row;
+		}
+		
+		public int getCol() {
+			return col;
+		}
 		
 		public void setRow(int row) {
 			this.row = row;
