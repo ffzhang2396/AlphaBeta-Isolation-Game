@@ -29,7 +29,7 @@ public class Board {
 			dx = (rowIndex - xPos) / Math.abs((rowIndex - xPos));
 		}
 		
-		if (yPos == rowIndex) {
+		if (yPos == col) {
 			dy = 0;
 		} else {
 			dy = (col - yPos) / Math.abs((col - yPos));
@@ -38,6 +38,9 @@ public class Board {
 		while ((rowIndex != xPos) || (col != yPos)) {
 			xPos += dx;
 			yPos += dy;
+			
+			System.out.println(dx + " " + dy + "dxdy");
+			System.out.println(xPos + " " + yPos);
 			if (isHole(xPos, yPos)) {
 				return false;
 			}
@@ -45,6 +48,9 @@ public class Board {
 		return true;	
 	}
 
+	public void setHole(int row, int col) {
+		board[row][col] = '#';
+	}
 
 
 	
@@ -53,7 +59,7 @@ public class Board {
 		Character.toUpperCase(row);
 
 		if (board[row - 64][col] == '-') {
-			board[row - 64][col] = 'O';
+			board[row - 64][col] = 'X';
 			return true;
 		}
 		return false;
