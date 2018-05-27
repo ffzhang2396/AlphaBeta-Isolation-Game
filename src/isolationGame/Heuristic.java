@@ -7,4 +7,9 @@ public class Heuristic {
 	public Heuristic(int option) {
 		choice = option;
 	}
+	
+	
+	public int evalFunc() {
+		
+	}
 }

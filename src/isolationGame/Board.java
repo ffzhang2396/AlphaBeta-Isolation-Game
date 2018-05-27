@@ -38,9 +38,6 @@ public class Board {
 		while ((rowIndex != xPos) || (col != yPos)) {
 			xPos += dx;
 			yPos += dy;
-			
-			System.out.println(dx + " " + dy + "dxdy");
-			System.out.println(xPos + " " + yPos);
 			if (isHole(xPos, yPos)) {
 				return false;
 			}
