@@ -11,6 +11,7 @@ public class Driver {
 		
 		System.out.println(board.toString());
 		
-		
+		System.out.println(board.getMoves(true));
+		System.out.println(board.getMoves(false));
 	}
 }

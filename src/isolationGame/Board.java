@@ -6,9 +6,11 @@ public class Board {
 	private XPos xPlayer = new XPos();
 	private OPos oPlayer = new OPos();
 
+
 	public Board() {
 		popBoard();
 		startingPosition();
+		
 	}
 	
 	/*
@@ -44,14 +46,39 @@ public class Board {
 		}	
 		return true;	
 	}
+	
+	/*
+	 * True == X player
+	 * False == O player
+	 */
+	public int getMoves(boolean player) {		
+		int moves = 0;
+		
+		moves += check(1, 1, player);
+		moves += check(-1, 1, player);
+		moves += check(-1, -1, player);
+		moves += check(1, -1, player);
+		moves += check(1, 0, player);
+		moves += check(-1, 0, player);
+		moves += check(0, 1, player);
+		moves += check(0, -1, player);
+		
+		
+		return moves;
+	}
+	
 
+	/*
+	 * sets position of hole on map.
+	 * Used after a player moves to set previouis position as a hole.
+	 */
 	public void setHole(int row, int col) {
 		board[row][col] = '#';
 	}
 
-
-	
-
+	/*
+	 * Sets position of x player
+	 */
 	public boolean setX(char row, int col) {
 		Character.toUpperCase(row);
 
@@ -62,6 +89,9 @@ public class Board {
 		return false;
 	}
 
+	/*
+	 * sets the position of the O.
+	 */
 	public boolean setO(char row, int col) {
 		Character.toUpperCase(row);
 
@@ -71,7 +101,11 @@ public class Board {
 		}
 		return false;
 	}
+	
 
+	/*
+	 *Prints out the board
+	 */
 	public String toString() {
 		String printBoard = "";
 		for (int i = 0; i < 9; i++) {
@@ -84,6 +118,36 @@ public class Board {
 		return printBoard;
 	}
 	
+
+	/*
+	 * checks if there is a valid move in a certain direction.
+	 */
+	private int check(int x, int y, boolean player) {
+		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
+		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
+		
+		int moves = 0;
+		
+		while (isOpen((xPos += x),(yPos += y))) {
+			moves++;
+		}
+		
+		return moves;	
+	}
+	
+	/*
+	 * checks if the spot is open.
+	 */
+	private boolean isOpen(int x, int y) {
+		if ((x < 9 && y < 9) && (x > 0 && y > 0)) {
+			if (board[x][y] == '-') {
+				return true;
+			}
+		}		
+		return false;
+	}
+	
+
 
 	/*
 	 * Checks if there is a hole at target

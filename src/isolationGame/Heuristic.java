@@ -1,15 +1,6 @@
 package isolationGame;
 
-public class Heuristic {
-	
-	private int choice;
-
-	public Heuristic(int option) {
-		choice = option;
-	}
-	
-	
-	public int evalFunc() {
+abstract public class Heuristic {	
+	abstract public int evalFunc(Board board);
 		
-	}
 }
