@@ -41,6 +41,8 @@ public class Board {
 	public List<Board> getChildren(Board board, boolean player) {
 		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
 		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
+		int temp1 = xPos;
+		int temp2 = yPos;
 		
 		//down 
 		for (int i = yPos + 1; i < 9; i++) {
@@ -71,12 +73,50 @@ public class Board {
 		}
 		
 		//upLeft
+		temp1--;
+		temp2--;
+		while (temp1 > 0 && temp2 > 0) {
+			temp1--;
+			temp2--;
+			if (isOpen(temp1, temp2)) 
+				children.add(new Board(this, temp1, temp2, player));
+		}
+		temp1 = xPos;
+		temp2 = yPos;
 		
 		//upRight
+		temp1++;
+		temp2--;
+		while (temp1 < 9 && temp2 > 0) {
+			temp1++;
+			temp2--;
+			if (isOpen(temp1, temp2)) 
+				children.add(new Board(this, temp1, temp2, player));
+		}
+		temp1 = xPos;
+		temp2 = yPos;
 		
 		//downLeft
+		temp1--;
+		temp2++;
+		while (temp1 > 0 && temp2 < 9) {
+			temp1--;
+			temp2++;
+			if (isOpen(temp1, temp2)) 
+				children.add(new Board(this, temp1, temp2, player));
+		}
+		temp1 = xPos;
+		temp2 = yPos;
 		
 		//downRight
+		temp1++;
+		temp2++;
+		while (temp1 < 9 && temp2 < 9) {
+			temp1++;
+			temp2++;
+			if (isOpen(temp1, temp2)) 
+				children.add(new Board(this, temp1, temp2, player));
+		}
 		
 		return null;
 	}
