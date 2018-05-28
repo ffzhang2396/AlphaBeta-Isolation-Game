@@ -17,70 +17,7 @@ public class Board {
 		parent = null;
 		
 	}
-	
-	/*
-	 * True == x move
-	 * false == o move
-	 */
-	public Board(Board board, int x, int y, boolean player) {
-		this.board = board.getBoard();
-		char row = (char) (x + 64);
 		
-		if (player) {
-			setX(row, y);
-		} else {
-			setO(row, y);
-		}
-	}
-	
-	
-	/*
-	 * true == X player
-	 * false == Y player
-	 */
-	public List<Board> getChildren(Board board, boolean player) {
-		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
-		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
-		
-		//down 
-		for (int i = yPos + 1; i < 9; i++) {
-			if (isOpen(xPos, i)) {
-				children.add(new Board(this, xPos, i, player));
-			}
-		}
-		
-		//up
-		for (int i = yPos - 1; i > 0; i--) {
-			if (isOpen(xPos, i)) {
-				children.add(new Board(this, xPos, i, player));
-			}
-		}
-		
-		//right
-		for (int i = xPos + 1; i < 9; i++) {
-			if (isOpen(i, yPos)) {
-				children.add(new Board(this, i, yPos, player));
-			}
-		}
-		
-		//left
-		for (int i = xPos - 1; i > 0; i--) {
-			if (isOpen(i, yPos)) {
-				children.add(new Board(this, i, yPos, player));
-			}
-		}
-		
-		//upLeft
-		
-		//upRight
-		
-		//downLeft
-		
-		//downRight
-		
-		return null;
-	}
-	
 	
 	/*
 	 * checks if there is a valid move for the
@@ -137,10 +74,6 @@ public class Board {
 	}
 	
 
-	public char[][] getBoard() {
-		return board;
-	}
-
 
 
 	/*
@@ -149,6 +82,8 @@ public class Board {
 	public boolean setX(char row, int col) {
 		int prevRow = xPlayer.getRow();
 		int prevCol = xPlayer.getCol();
+		
+		
 		
 		Character.toUpperCase(row);
 		if (board[row - 64][col] == '-') {
@@ -204,6 +139,19 @@ public class Board {
 		return printBoard;
 	}
 	
+	private char[][] copyState(char[][] state) {
+		char[][] newBoard = new char[9][9];
+		
+		
+		for (int i = 0; i < state.length; i++) {
+			for (int j = 0; j < state.length; j++) {
+				newBoard[i][j] = state[i][j];
+			}
+		}
+		
+		return newBoard;
+	}
+	
 	/*
 	 * sets position of hole on map.
 	 * Used after a player moves to set previouis position as a hole.
@@ -232,7 +180,7 @@ public class Board {
 	/*
 	 * checks if the spot is open.
 	 */
-	private boolean isOpen(int x, int y) {
+	public boolean isOpen(int x, int y) {
 		if ((x < 9 && y < 9) && (x > 0 && y > 0)) {
 			if (board[x][y] == '-') {
 				return true;
@@ -241,6 +189,7 @@ public class Board {
 		return false;
 	}
 	
+
 
 
 	/*
