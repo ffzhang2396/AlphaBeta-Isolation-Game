@@ -5,7 +5,6 @@ public class Driver {
 	public static void main(String args[]) {
 		Board board = new Board();
 		EvalFunc1 e = new EvalFunc1();
-		
-		board.getChildren(true);
+	
 	}
 }

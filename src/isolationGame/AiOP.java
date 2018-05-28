@@ -41,8 +41,8 @@ public class AiOP extends Heuristic {
 
 	private double check(int x, int y, boolean player, Board board) {
 		int moves = 0;
-		int xPos = (player) ? board.getxXPos() : board.getoXPos();
-		int yPos = (player) ? board.getxYPos() : board.getoYPos();
+		int xPos = (player) ? board.getXRow() : board.getORow();
+		int yPos = (player) ? board.getOCol() : board.getOCol();
 
 		while (board.isOpen((xPos += x), (yPos += y)) && (moves < 3)) {
 			moves++;
@@ -55,10 +55,10 @@ public class AiOP extends Heuristic {
 	 * is worse
 	 */
 	private double eDistance(Board board) {
-		int xxPos = board.getxXPos();
-		int xyPos = board.getxYPos();
-		int oxPos = board.getoXPos();
-		int oyPos = board.getoYPos();
+		int xxPos = board.getXRow();
+		int xyPos = board.getXCol();
+		int oxPos = board.getORow();
+		int oyPos = board.getOCol();
 
 		int yResult = Math.abs(xyPos - oyPos);
 		int xResult = Math.abs(xxPos - oxPos);

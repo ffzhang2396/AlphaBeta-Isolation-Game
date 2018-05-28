@@ -356,7 +356,7 @@ public class Board {
 	/*
 	 * checks if the spot is open.
 	 */
-	private boolean isOpen(int x, int y) {
+	public boolean isOpen(int x, int y) {
 		if ((x < 9 && y < 9) && (x > 0 && y > 0)) {
 			if (board[x][y] == '-') {
 				return true;
