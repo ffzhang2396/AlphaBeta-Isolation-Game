@@ -71,8 +71,14 @@ public class Board {
 		}
 		
 		//upLeft
-		for (int i = xPos - 1, yPos - 1;)
 		
+		//upRight
+		
+		//downLeft
+		
+		//downRight
+		
+		return null;
 	}
 	
 	
@@ -130,26 +136,30 @@ public class Board {
 		return moves;
 	}
 	
+
 	public char[][] getBoard() {
 		return board;
 	}
 
-	/*
-	 * sets position of hole on map.
-	 * Used after a player moves to set previouis position as a hole.
-	 */
-	public void setHole(int row, int col) {
-		board[row][col] = '#';
-	}
+
 
 	/*
 	 * Sets position of x player
 	 */
 	public boolean setX(char row, int col) {
+		int prevRow = xPlayer.getRow();
+		int prevCol = xPlayer.getCol();
+		
 		Character.toUpperCase(row);
-
 		if (board[row - 64][col] == '-') {
 			board[row - 64][col] = 'X';
+			
+			xPlayer.setRow(row - 64);
+			xPlayer.setCol(col);
+			
+			if (xPlayer.getRow() != 1 || xPlayer.getCol() != 1) {
+				setHole(prevRow, prevCol);
+			}
 			return true;
 		}
 		return false;
@@ -159,10 +169,20 @@ public class Board {
 	 * sets the position of the O.
 	 */
 	public boolean setO(char row, int col) {
+		int prevRow = oPlayer.getRow();
+		int prevCol = oPlayer.getCol();
+		
 		Character.toUpperCase(row);
 
 		if (board[row - 64][col] == '-') {
 			board[row - 64][col] = 'O';
+			
+			oPlayer.setRow(row - 64);
+			oPlayer.setCol(col);
+			
+			if (oPlayer.getRow() != 1 || oPlayer.getCol() != 1) {
+				setHole(prevRow, prevCol);
+			}
 			return true;
 		}
 		return false;
@@ -184,6 +204,14 @@ public class Board {
 		return printBoard;
 	}
 	
+	/*
+	 * sets position of hole on map.
+	 * Used after a player moves to set previouis position as a hole.
+	 */
+	private void setHole(int row, int col) {
+		board[row][col] = '#';
+	}
+
 
 	/*
 	 * checks if there is a valid move in a certain direction.
