@@ -18,6 +18,104 @@ public class Board {
 		
 	}
 		
+<<<<<<< HEAD
+=======
+		if (player) {
+			setX(row, y);
+		} else {
+			setO(row, y);
+		}
+	}
+	
+	
+	/*
+	 * true == X player
+	 * false == Y player
+	 */
+	public List<Board> getChildren(Board board, boolean player) {
+		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
+		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
+		int temp1 = xPos;
+		int temp2 = yPos;
+		
+		//down 
+		for (int i = yPos + 1; i < 9; i++) {
+			if (isOpen(xPos, i)) {
+				children.add(new Board(this, xPos, i, player));
+			}
+		}
+		
+		//up
+		for (int i = yPos - 1; i > 0; i--) {
+			if (isOpen(xPos, i)) {
+				children.add(new Board(this, xPos, i, player));
+			}
+		}
+		
+		//right
+		for (int i = xPos + 1; i < 9; i++) {
+			if (isOpen(i, yPos)) {
+				children.add(new Board(this, i, yPos, player));
+			}
+		}
+		
+		//left
+		for (int i = xPos - 1; i > 0; i--) {
+			if (isOpen(i, yPos)) {
+				children.add(new Board(this, i, yPos, player));
+			}
+		}
+		
+		//upLeft
+		temp1--;
+		temp2--;
+		while (temp1 > 0 && temp2 > 0) {
+			temp1--;
+			temp2--;
+			if (isOpen(temp1, temp2)) 
+				children.add(new Board(this, temp1, temp2, player));
+		}
+		temp1 = xPos;
+		temp2 = yPos;
+		
+		//upRight
+		temp1++;
+		temp2--;
+		while (temp1 < 9 && temp2 > 0) {
+			temp1++;
+			temp2--;
+			if (isOpen(temp1, temp2)) 
+				children.add(new Board(this, temp1, temp2, player));
+		}
+		temp1 = xPos;
+		temp2 = yPos;
+		
+		//downLeft
+		temp1--;
+		temp2++;
+		while (temp1 > 0 && temp2 < 9) {
+			temp1--;
+			temp2++;
+			if (isOpen(temp1, temp2)) 
+				children.add(new Board(this, temp1, temp2, player));
+		}
+		temp1 = xPos;
+		temp2 = yPos;
+		
+		//downRight
+		temp1++;
+		temp2++;
+		while (temp1 < 9 && temp2 < 9) {
+			temp1++;
+			temp2++;
+			if (isOpen(temp1, temp2)) 
+				children.add(new Board(this, temp1, temp2, player));
+		}
+		
+		return null;
+	}
+	
+>>>>>>> 39db817d8dfc4e997d3295db86f743d14ba92849
 	
 	/*
 	 * checks if there is a valid move for the
