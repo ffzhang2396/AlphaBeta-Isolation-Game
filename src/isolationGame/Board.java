@@ -17,16 +17,42 @@ public class Board {
 		parent = null;
 		
 	}
-		
-<<<<<<< HEAD
-=======
+	
+	/*
+	 * True == x move
+	 * false == o move
+	 */
+	public Board(Board board, int x, int y, boolean player) {
+		this.board = board.copyState(board.board);
+		char row = (char) (x + 64);
+
 		if (player) {
+			this.oPlayer = board.oPlayer;
+			this.xPlayer.setRow(board.getXRow());
+			this.xPlayer.setCol(board.getXCol());
+			//System.out.println("Current row: " + xPlayer.row + " Current col: " + xPlayer.col);
 			setX(row, y);
+
 		} else {
+			
+			this.xPlayer = board.xPlayer;
+			this.oPlayer.setRow(board.getORow());
+			this.oPlayer.setCol(board.getOCol());
 			setO(row, y);
 		}
 	}
 	
+	private char[][] copyState(char[][] state) {
+		char[][] newBoard = new char[9][9];
+		
+		for (int i = 0; i < state.length; i++) {
+			for (int j = 0; j < state.length; j++) {
+				newBoard[i][j] = state[i][j];
+			}
+		}
+		
+		return newBoard;
+	}
 	
 	/*
 	 * true == X player
@@ -38,84 +64,124 @@ public class Board {
 		int temp1 = xPos;
 		int temp2 = yPos;
 		
-		//down 
+		
+		//right
 		for (int i = yPos + 1; i < 9; i++) {
 			if (isOpen(xPos, i)) {
 				children.add(new Board(this, xPos, i, player));
 			}
+			else {
+				break;
+			}
 		}
+		//System.out.println("Size of children (right): " + children.size());
 		
-		//up
+		//left
 		for (int i = yPos - 1; i > 0; i--) {
 			if (isOpen(xPos, i)) {
 				children.add(new Board(this, xPos, i, player));
 			}
+			else {
+				break;
+			}
 		}
+		//System.out.println("Size of children (up): " + children.size());
 		
-		//right
+		//down
 		for (int i = xPos + 1; i < 9; i++) {
 			if (isOpen(i, yPos)) {
 				children.add(new Board(this, i, yPos, player));
 			}
+			else {
+				break;
+			}
 		}
+		//System.out.println("Size of children (down): " + children.size());
 		
-		//left
+		//up
 		for (int i = xPos - 1; i > 0; i--) {
 			if (isOpen(i, yPos)) {
 				children.add(new Board(this, i, yPos, player));
 			}
+			else {
+				break;
+			}
 		}
+		//System.out.println("Size of children (left): " + children.size());
 		
 		//upLeft
 		temp1--;
 		temp2--;
 		while (temp1 > 0 && temp2 > 0) {
+			if (isOpen(temp1, temp2)) {
+				children.add(new Board(this, temp1, temp2, player));
+			}
+			else {
+				break;
+			}
 			temp1--;
 			temp2--;
-			if (isOpen(temp1, temp2)) 
-				children.add(new Board(this, temp1, temp2, player));
 		}
 		temp1 = xPos;
 		temp2 = yPos;
+		//System.out.println("Size of children (upLeft): " + children.size());
 		
-		//upRight
+		//downLeft
 		temp1++;
 		temp2--;
 		while (temp1 < 9 && temp2 > 0) {
+			if (isOpen(temp1, temp2)) {
+				children.add(new Board(this, temp1, temp2, player));
+			}
+			else {
+				break;
+			}
 			temp1++;
 			temp2--;
-			if (isOpen(temp1, temp2)) 
-				children.add(new Board(this, temp1, temp2, player));
 		}
 		temp1 = xPos;
 		temp2 = yPos;
+		//System.out.println("Size of children(upRight): " + children.size());
 		
-		//downLeft
+		//upRight
 		temp1--;
 		temp2++;
 		while (temp1 > 0 && temp2 < 9) {
+			if (isOpen(temp1, temp2)) {
+				children.add(new Board(this, temp1, temp2, player));
+			}
+			else {
+				break;
+			}
 			temp1--;
 			temp2++;
-			if (isOpen(temp1, temp2)) 
-				children.add(new Board(this, temp1, temp2, player));
 		}
 		temp1 = xPos;
 		temp2 = yPos;
+		//System.out.println("Size of children (downLeft): " + children.size());
 		
 		//downRight
 		temp1++;
 		temp2++;
 		while (temp1 < 9 && temp2 < 9) {
+			if (isOpen(temp1, temp2)) {
+				children.add(new Board(this, temp1, temp2, player));
+			}
+			else {
+				break;
+			}
 			temp1++;
 			temp2++;
-			if (isOpen(temp1, temp2)) 
-				children.add(new Board(this, temp1, temp2, player));
 		}
+		
+		//System.out.println("Size of children (downRight): " + children.size());
+		System.out.println("Now printing children");
+		for (int i = 0; i < children.size(); i++)
+			System.out.println(children.get(i).toString());
 		
 		return null;
 	}
 	
->>>>>>> 39db817d8dfc4e997d3295db86f743d14ba92849
 	
 	/*
 	 * checks if there is a valid move for the
@@ -172,16 +238,35 @@ public class Board {
 	}
 	
 
+	public char[][] getBoard() {
+		return board;
+	}
+
+	public int getXRow() {
+		return xPlayer.getRow();
+	}
+	
+	public int getXCol() {
+		return xPlayer.getCol();
+	}
+	
+	public int getORow() {
+		return oPlayer.getRow();
+	}
+	
+	public int getOCol() {
+		return oPlayer.getCol();
+	}
 
 
 	/*
 	 * Sets position of x player
 	 */
 	public boolean setX(char row, int col) {
-		int prevRow = xPlayer.getRow();
-		int prevCol = xPlayer.getCol();
+		int prevRow = xPlayer.row;
+		int prevCol = xPlayer.col;
 		
-		
+		System.out.println("prevRow: " + prevRow + " prevCol: " + prevCol);
 		
 		Character.toUpperCase(row);
 		if (board[row - 64][col] == '-') {
@@ -190,9 +275,13 @@ public class Board {
 			xPlayer.setRow(row - 64);
 			xPlayer.setCol(col);
 			
-			if (xPlayer.getRow() != 1 || xPlayer.getCol() != 1) {
+			System.out.println("PREVIOUS: " + prevRow + "," + prevCol);
+			System.out.println("CURRENT: " + xPlayer.row + "," + xPlayer.col);
+			if (xPlayer.row != prevRow || xPlayer.col != prevCol) {
 				setHole(prevRow, prevCol);
 			}
+			/*System.out.println("X row: " + xPlayer.getRow());
+			System.out.println("X col: " + xPlayer.getCol());*/
 			return true;
 		}
 		return false;
@@ -202,8 +291,8 @@ public class Board {
 	 * sets the position of the O.
 	 */
 	public boolean setO(char row, int col) {
-		int prevRow = oPlayer.getRow();
-		int prevCol = oPlayer.getCol();
+		int prevRow = oPlayer.row;
+		int prevCol = oPlayer.col;
 		
 		Character.toUpperCase(row);
 
@@ -213,9 +302,11 @@ public class Board {
 			oPlayer.setRow(row - 64);
 			oPlayer.setCol(col);
 			
-			if (oPlayer.getRow() != 1 || oPlayer.getCol() != 1) {
+			if (oPlayer.row != prevRow || oPlayer.col != prevCol) {
 				setHole(prevRow, prevCol);
 			}
+			/*System.out.println("O row: " + oPlayer.getRow());
+			System.out.println("O col: " + oPlayer.getCol());*/
 			return true;
 		}
 		return false;
@@ -235,19 +326,6 @@ public class Board {
 			printBoard += '\n';
 		}
 		return printBoard;
-	}
-	
-	private char[][] copyState(char[][] state) {
-		char[][] newBoard = new char[9][9];
-		
-		
-		for (int i = 0; i < state.length; i++) {
-			for (int j = 0; j < state.length; j++) {
-				newBoard[i][j] = state[i][j];
-			}
-		}
-		
-		return newBoard;
 	}
 	
 	/*
@@ -278,7 +356,7 @@ public class Board {
 	/*
 	 * checks if the spot is open.
 	 */
-	public boolean isOpen(int x, int y) {
+	private boolean isOpen(int x, int y) {
 		if ((x < 9 && y < 9) && (x > 0 && y > 0)) {
 			if (board[x][y] == '-') {
 				return true;
@@ -287,7 +365,6 @@ public class Board {
 		return false;
 	}
 	
-
 
 
 	/*
