@@ -8,6 +8,9 @@ public class Board {
 	private XPos xPlayer = new XPos();
 	private OPos oPlayer = new OPos();
 	private Board parent;
+	private Board child;
+	private double eval;
+	private int depth;
 	private List<Board> children = new ArrayList<Board>();
 
 
@@ -15,29 +18,33 @@ public class Board {
 		popBoard();
 		startingPosition();
 		parent = null;
-		
+		depth = 0;
 	}
+	
+	
 	
 	/*
 	 * True == x move
 	 * false == o move
 	 */
-	public Board(Board board, int x, int y, boolean player) {
-		this.board = board.copyState(board.board);
+	public Board(Board parent, int x, int y, boolean player) {
+		parent.child = this;
+		this.parent = parent;
+		this.board = parent.copyState(parent.board);
+		this.depth = parent.depth++;
 		char row = (char) (x + 64);
 
 		if (player) {
-			this.oPlayer = board.oPlayer;
-			this.xPlayer.setRow(board.getXRow());
-			this.xPlayer.setCol(board.getXCol());
-			//System.out.println("Current row: " + xPlayer.row + " Current col: " + xPlayer.col);
+			this.oPlayer = parent.oPlayer;
+			this.xPlayer.setRow(parent.getXRow());
+			this.xPlayer.setCol(parent.getXCol());
 			setX(row, y);
 
 		} else {
 			
-			this.xPlayer = board.xPlayer;
-			this.oPlayer.setRow(board.getORow());
-			this.oPlayer.setCol(board.getOCol());
+			this.xPlayer = parent.xPlayer;
+			this.oPlayer.setRow(parent.getORow());
+			this.oPlayer.setCol(parent.getOCol());
 			setO(row, y);
 		}
 	}
@@ -74,7 +81,6 @@ public class Board {
 				break;
 			}
 		}
-		//System.out.println("Size of children (right): " + children.size());
 		
 		//left
 		for (int i = yPos - 1; i > 0; i--) {
@@ -85,7 +91,7 @@ public class Board {
 				break;
 			}
 		}
-		//System.out.println("Size of children (up): " + children.size());
+
 		
 		//down
 		for (int i = xPos + 1; i < 9; i++) {
@@ -96,7 +102,7 @@ public class Board {
 				break;
 			}
 		}
-		//System.out.println("Size of children (down): " + children.size());
+
 		
 		//up
 		for (int i = xPos - 1; i > 0; i--) {
@@ -107,7 +113,6 @@ public class Board {
 				break;
 			}
 		}
-		//System.out.println("Size of children (left): " + children.size());
 		
 		//upLeft
 		temp1--;
@@ -124,7 +129,7 @@ public class Board {
 		}
 		temp1 = xPos;
 		temp2 = yPos;
-		//System.out.println("Size of children (upLeft): " + children.size());
+
 		
 		//downLeft
 		temp1++;
@@ -141,7 +146,7 @@ public class Board {
 		}
 		temp1 = xPos;
 		temp2 = yPos;
-		//System.out.println("Size of children(upRight): " + children.size());
+
 		
 		//upRight
 		temp1--;
@@ -158,7 +163,7 @@ public class Board {
 		}
 		temp1 = xPos;
 		temp2 = yPos;
-		//System.out.println("Size of children (downLeft): " + children.size());
+
 		
 		//downRight
 		temp1++;
@@ -174,12 +179,7 @@ public class Board {
 			temp2++;
 		}
 		
-		//System.out.println("Size of children (downRight): " + children.size());
-		System.out.println("Now printing children");
-		for (int i = 0; i < children.size(); i++)
-			System.out.println(children.get(i).toString());
-		
-		return null;
+		return children;
 	}
 	
 	
@@ -237,7 +237,27 @@ public class Board {
 		return moves;
 	}
 	
+	
+	public int getDepth() {
+		return depth;
+	}
+	
+	public void setEval(double value) {
+		this.eval = value;
+	}
+	
+	public double getEval() {
+		return eval;
+	}
 
+	public boolean isLeaf() {
+		return (this.child == null);
+	}
+	
+	public Board getParent() {
+		return parent;
+	}
+	
 	public char[][] getBoard() {
 		return board;
 	}
@@ -266,7 +286,6 @@ public class Board {
 		int prevRow = xPlayer.row;
 		int prevCol = xPlayer.col;
 		
-		System.out.println("prevRow: " + prevRow + " prevCol: " + prevCol);
 		
 		Character.toUpperCase(row);
 		if (board[row - 64][col] == '-') {
@@ -275,13 +294,9 @@ public class Board {
 			xPlayer.setRow(row - 64);
 			xPlayer.setCol(col);
 			
-			System.out.println("PREVIOUS: " + prevRow + "," + prevCol);
-			System.out.println("CURRENT: " + xPlayer.row + "," + xPlayer.col);
 			if (xPlayer.row != prevRow || xPlayer.col != prevCol) {
 				setHole(prevRow, prevCol);
 			}
-			/*System.out.println("X row: " + xPlayer.getRow());
-			System.out.println("X col: " + xPlayer.getCol());*/
 			return true;
 		}
 		return false;
@@ -305,8 +320,6 @@ public class Board {
 			if (oPlayer.row != prevRow || oPlayer.col != prevCol) {
 				setHole(prevRow, prevCol);
 			}
-			/*System.out.println("O row: " + oPlayer.getRow());
-			System.out.println("O col: " + oPlayer.getCol());*/
 			return true;
 		}
 		return false;
