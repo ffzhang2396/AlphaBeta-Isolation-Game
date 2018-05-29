@@ -10,9 +10,7 @@ public class AiOP extends Heuristic {
 		
 		double resultFunction = closeSpaces - oppSpaces - distance;
 		
-		System.out.println(closeSpaces);
-		System.out.println(oppSpaces);
-		System.out.println(distance);
+		
 		
 		return resultFunction;
 	}

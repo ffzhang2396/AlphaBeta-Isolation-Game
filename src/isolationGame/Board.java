@@ -2,6 +2,8 @@ package isolationGame;
 
 import java.util.*;
 
+
+
 public class Board {
 
 	private char[][] board = new char[9][9];
@@ -31,7 +33,7 @@ public class Board {
 		parent.child = this;
 		this.parent = parent;
 		this.board = parent.copyState(parent.board);
-		this.depth = parent.depth++;
+		this.depth = parent.depth + 1;
 		char row = (char) (x + 64);
 
 		if (player) {
@@ -65,9 +67,12 @@ public class Board {
 	 * true == X player
 	 * false == Y player
 	 */
-	public List<Board> getChildren(Board board, boolean player) {
-		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
-		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
+	public List<Board> getChildren( boolean player) {
+		//int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
+		//int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
+		int xPos = oPlayer.getRow();
+		int yPos = oPlayer.getCol();
+		
 		int temp1 = xPos;
 		int temp2 = yPos;
 		
