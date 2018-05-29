@@ -1,44 +1,124 @@
 package isolationGame;
 
+import java.util.*;
+
 public class Driver {
 
 	public static void main(String args[]) {
 		Board board = new Board();
 		GameAgent agent = new GameAgent();
+		EvalFunc1 eval = new EvalFunc1();
+		SimpleEval eval1 = new SimpleEval();
+		
 		
 		Pair inf = new Pair(null, 9999);
 		Pair nInf = new Pair(null, -9999);
 		
-		board.setX('C', 4);
+		Scanner keyboard = new Scanner(System.in);
+		String choice;
+		
+		
+		//board.setO('G', 7);
+		
+		for (int i = 0; i < 50; i++) {
+			System.out.println("X's move");
+			System.out.println(board);
+			board = agent.alphaBeta(board, nInf, inf, 5, 0, true, true).getBoard();
+			
+			for (int j = 5; j > 1; j--) {
+				board = board.getParent();
+			}
+			System.out.println("O's move");
+			System.out.println(board);
+			
+			
+			board = agent.alphaBeta(board, nInf, inf, 5, 0, false, false).getBoard();
+			for (int j = 5; j > 1; j--) {
+				board = board.getParent();
+			}
+		}
+		
+		
+		
+/*		board.setX('G', 7);
 		System.out.println(board);
-		board = agent.alphaBeta(board, inf, nInf, 3,0, false).getBoard();
-		System.out.println("depth limit " + board.getDepth());
-		System.out.println("=============================================");
 		
-		
-		board.setX('C', 8);
+		board = agent.alphaBeta(board, nInf, inf, 5, 0, false).getBoard();
 		System.out.println(board);
-		board = agent.alphaBeta(board, inf, nInf, 3,0, false).getBoard();
-		System.out.println("depth limit " + board.getDepth());
-		System.out.println("=============================================");
-		
-		board.setX('G', 4);
-		System.out.println(board);
-		board = agent.alphaBeta(board, inf, nInf, 3, 0, false).getBoard();
-		System.out.println("depth limit " + board.getDepth());
-
-		
-
-		
-	
-		
-/*		for (Board state : board.getChildren(board, true)) {
-			System.out.println(state.getDepth());
+		*/
+		/*for (Board state : board.getChildren(false)) {
 			System.out.println(state);
+			System.out.println(eval.evalFunc(state));
 		}*/
+
+		
+/*		board.setX('G', 7);
+		System.out.println(board);
+
+		board = agent.alphaBeta(board, nInf, inf, 3, 0, false).getBoard();
+		
+		for (int i = 3; i > 1; i--) {
+			board = board.getParent();
+		}
+		System.out.println(board);
 		
 		
 		
+		
+		board.setX('G', 6);
+		System.out.println(board);
+		board.setParent(null);		
+		board = agent.alphaBeta(board, nInf, inf, 3, 0, false).getBoard();	
+		for (int i = 3; i > 1; i--) {
+			board = board.getParent();
+		}
+		System.out.println(board);
+		
+		board.setX('G', 1);
+		System.out.println(board);
+		board.setParent(null);		
+		board = agent.alphaBeta(board, nInf, inf, 3, 0, false).getBoard();	
+		for (int i = 3; i > 1; i--) {
+			board = board.getParent();
+		}
+		System.out.println(board);*/
+		
+
+/*		board.setX('G', 7);
+		System.out.println(board);
+		
+		for (Board state : board.getChildren(false).get(0).getChildren(true).get(1).getChildren(false)) {
+			System.out.println("=======================");
+			System.out.println(state);
+			System.out.println(eval.evalFunc(state));
+			System.out.println(state.getParent());
+		}
+		
+		
+		
+		board = agent.alphaBeta(board, nInf, inf, 3, 0, false).getBoard();
+		
+		System.out.println(board);
+		System.out.println(board.getParent());
+		System.out.println(board.getParent().getParent());
+		System.out.println(board.getParent().getParent().getParent());*/
+		
+/*		while (true) {
+			System.out.print("Enter the command: ");
+			choice = keyboard.nextLine();
+			board.setX(choice.charAt(0), Character.getNumericValue(choice.charAt(1)));
+			System.out.println("Player's Move:");
+			System.out.println(board);
+			board = agent.alphaBeta(board, nInf, inf, 5, 0, false).getBoard(); // replaced 3 with val
+			
+			for (int i = 5; i > 1; i--) {
+				board = board.getParent();
+			}
+			//val++; // test
+			System.out.println("Computer's Move:");
+			System.out.println(board);
+			System.out.println("depth limit " + board.getDepth());
+		}*/
 		
 
 		

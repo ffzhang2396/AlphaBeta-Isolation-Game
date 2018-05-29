@@ -13,7 +13,6 @@ public class Board {
 	private Board child;
 	private double eval;
 	private int depth;
-	private List<Board> children = new ArrayList<Board>();
 
 
 	public Board() {
@@ -32,7 +31,7 @@ public class Board {
 	public Board(Board parent, int x, int y, boolean player) {
 		parent.child = this;
 		this.parent = parent;
-		this.board = parent.copyState(parent.board);
+		this.board = copyState(parent.board);
 		this.depth = parent.depth + 1;
 		char row = (char) (x + 64);
 
@@ -59,19 +58,20 @@ public class Board {
 				newBoard[i][j] = state[i][j];
 			}
 		}
-		
 		return newBoard;
 	}
 	
 	/*
 	 * true == X player
-	 * false == Y player
+	 * false == O player
 	 */
 	public List<Board> getChildren( boolean player) {
-		//int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
-		//int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
-		int xPos = oPlayer.getRow();
-		int yPos = oPlayer.getCol();
+		List<Board> children = new ArrayList<Board>();
+		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
+		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
+		//int xPos = oPlayer.getRow();
+		//int yPos = oPlayer.getCol();
+		
 		
 		int temp1 = xPos;
 		int temp2 = yPos;
@@ -240,6 +240,11 @@ public class Board {
 		
 		
 		return moves;
+	}
+	
+	
+	public void setParent(Board parent) {
+		this.parent = parent;
 	}
 	
 	
