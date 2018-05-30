@@ -4,12 +4,18 @@ public class Pair {
 	
 	private Board board;
 	private double score;
+	private int depth;
 	
-	public Pair (Board board, double score) {
+	public Pair (Board board, double score, int depth) {
 		this.board = board;
 		this.score = score;
+		this.depth = depth;
 	}
 	
+	
+	public int getDepth() {
+		return depth;
+	}
 	
 	public Board getBoard() {
 		return board;

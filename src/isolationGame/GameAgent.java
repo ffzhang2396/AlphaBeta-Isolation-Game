@@ -20,9 +20,9 @@ public class GameAgent {
 
 		if (depth == depthLimit) {
 			if (func) {
-				return new Pair(start, eval.evalFunc(start));
+				return new Pair(start, eval.evalFunc(start), depth);
 			} else {
-				return new Pair(start, eval1.evalFunc(start));
+				return new Pair(start, eval1.evalFunc(start), depth);
 			}
 
 		}
@@ -30,7 +30,7 @@ public class GameAgent {
 		List<Board> children = start.getChildren(Xplayer);
 
 		if (player) {
-			Pair bestValue = new Pair(null, nInf);
+			Pair bestValue = new Pair(null, nInf, depth);
 			for (int i = 0; i < children.size(); i++) {
 				Pair value = alphaBeta(children.get(i), alpha, beta, depthLimit, depth + 1, !player, func, !Xplayer);
 				if (value.getScore() > bestValue.getScore()) {
@@ -51,7 +51,7 @@ public class GameAgent {
 			}
 			return bestValue;
 		} else {
-			Pair bestValue = new Pair(null, inf);
+			Pair bestValue = new Pair(null, inf, depth);
 			for (int i = 0; i < children.size(); i++) {
 				Pair value = alphaBeta(children.get(i), alpha, beta, depthLimit, depth + 1, !player, func, !Xplayer);
 
