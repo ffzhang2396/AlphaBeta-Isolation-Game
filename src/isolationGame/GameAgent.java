@@ -16,23 +16,23 @@ public class GameAgent {
 	 * Alpha beta pruning with pairs to hold both board state as well as its
 	 * evaluation score.
 	 */
-	public Pair alphaBeta(Board start, Pair alpha, Pair beta, int depthLimit, int depth, boolean player, boolean func) {
+	public Pair alphaBeta(Board start, Pair alpha, Pair beta, int depthLimit, int depth, boolean player, boolean func, boolean Xplayer) {
 
 		if (depth == depthLimit) {
 			if (func) {
-				return new Pair(start, eval1.evalFunc(start));
+				return new Pair(start, eval.evalFunc(start));
 			} else {
-				return new Pair(start, eval2.evalFunc(start));
+				return new Pair(start, eval1.evalFunc(start));
 			}
 
 		}
 
-		List<Board> children = start.getChildren(player);
+		List<Board> children = start.getChildren(Xplayer);
 
 		if (player) {
 			Pair bestValue = new Pair(null, nInf);
 			for (int i = 0; i < children.size(); i++) {
-				Pair value = alphaBeta(children.get(i), alpha, beta, depthLimit, depth + 1, !player, func);
+				Pair value = alphaBeta(children.get(i), alpha, beta, depthLimit, depth + 1, !player, func, !Xplayer);
 				if (value.getScore() > bestValue.getScore()) {
 					bestValue = value;
 				}
@@ -49,7 +49,7 @@ public class GameAgent {
 		} else {
 			Pair bestValue = new Pair(null, inf);
 			for (int i = 0; i < children.size(); i++) {
-				Pair value = alphaBeta(children.get(i), alpha, beta, depthLimit, depth + 1, !player, func);
+				Pair value = alphaBeta(children.get(i), alpha, beta, depthLimit, depth + 1, !player, func, !Xplayer);
 
 				if (value.getScore() < bestValue.getScore()) {
 					bestValue = value;

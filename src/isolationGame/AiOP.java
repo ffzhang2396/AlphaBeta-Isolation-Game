@@ -3,16 +3,24 @@ package isolationGame;
 public class AiOP extends Heuristic {
 
 	@Override
-	public double evalFunc(Board board) {
-		int oppSpaces = occupiedSpaces(board, true); //calculates enemy distance from occupied squares, lower is better
-		double distance = eDistance(board); // calculates distance from  computer to player, "chases player" lower is better
-		int closeSpaces = occupiedSpaces(board, false); //calculates distance from comp to walls, tries to not trap itself. higher is better.
+	public double evalFunc(Board board) {		
 		
-		double resultFunction = closeSpaces - oppSpaces - distance;
+		return calcEval(board);
+	}
+	
+	
+	private double calcEval(Board board) {
+		int oppSpaces = occupiedSpaces(board, true); //enemy distance from walls, lower is better.
+		int compSpaces = occupiedSpaces(board, false); //comp distance from walls. higher is better.
+		double distance = eDistance(board); //distance fromula. lower is better.
 		
+		double oppSpacesWeight = (1 - (oppSpaces/24)) * 25;
+		double compSpacesWeight = (compSpaces / 24) * 25;
+		double distanceWeight = (1 - (distance / 9.899494936611665)) * 50;
 		
+		double totalWeightedEval = oppSpacesWeight + compSpacesWeight + distanceWeight;
 		
-		return resultFunction;
+		return totalWeightedEval;
 	}
 
 	/*
@@ -21,7 +29,7 @@ public class AiOP extends Heuristic {
 	 * position.
 	 * 
 	 */
-	public int occupiedSpaces(Board board, boolean player) {
+	private int occupiedSpaces(Board board, boolean player) {
 
 		int numOfMoves = 0;
 
@@ -40,7 +48,7 @@ public class AiOP extends Heuristic {
 	private double check(int x, int y, boolean player, Board board) {
 		int moves = 0;
 		int xPos = (player) ? board.getXRow() : board.getORow();
-		int yPos = (player) ? board.getOCol() : board.getOCol();
+		int yPos = (player) ? board.getXCol() : board.getOCol();
 
 		while (board.isOpen((xPos += x), (yPos += y)) && (moves < 3)) {
 			moves++;
