@@ -9,8 +9,6 @@ public class GameAgent {
 	SimpleEval eval2 = new SimpleEval();
 	private double inf = 9999;
 	private double nInf = -9999;
-	private long startTime = 0;
-	private long elapsedTime = 0;
 
 	/*
 	 * Alpha beta pruning with pairs to hold both board state as well as its

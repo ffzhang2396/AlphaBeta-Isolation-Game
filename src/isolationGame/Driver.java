@@ -1,10 +1,9 @@
 package isolationGame;
 
 import java.util.*;
-
 public class Driver {
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws InterruptedException {
 		Board board = new Board();
 		GameAgent agent = new GameAgent();
 		EvalFunc1 eval = new EvalFunc1();
@@ -16,9 +15,10 @@ public class Driver {
 
 		Scanner keyboard = new Scanner(System.in);
 		String choice;
-
-		int depth1;
-		int depth2;
+		boolean valid;
+		long startTime = 0;
+		long elapsedTime = 0;
+		int depth;
 		
 		/*
 		 * System.out.println(board);
@@ -38,8 +38,8 @@ public class Driver {
 			//System.out.println("X's move");
 			optimalPair = agent.alphaBeta(board, nInf, inf, 6, 0, true, true, true);
 			board = optimalPair.getBoard();
-			depth1 = optimalPair.getDepth();
-			for (int j = depth1; j > 1; j--) {
+			depth = optimalPair.getDepth();
+			for (int j = depth; j > 1; j--) {
 				board = board.getParent();
 			}
 			//System.out.println(board);
@@ -56,8 +56,8 @@ public class Driver {
 			//System.out.println("O's move");
 			optimalPair = agent.alphaBeta(board, nInf, inf, 6, 0, true, false, false);
 			board = optimalPair.getBoard();
-			depth2 = optimalPair.getDepth();
-			for (int j = depth2; j > 1; j--) {
+			depth = optimalPair.getDepth();
+			for (int j = depth; j > 1; j--) {
 				board = board.getParent();
 			}
 			//System.out.println(board);
@@ -74,12 +74,20 @@ public class Driver {
 		board = new Board();
 		}
 		System.out.println("Player wins out of 20: " + playerWin);*/
-		
+
+
 		System.out.println("Initial board:\n" + board);
 		while (true) {
-			System.out.print("Enter the command: ");
+			System.out.println("Enter command in form 'a2' or 'A2' given choices (a,b,c,d,e,f,g,h)(1,2,3,4,5,6,7,8)");
+			System.out.print("Choice: ");
 			choice = keyboard.nextLine();
-			board.setX(choice.charAt(0), Character.getNumericValue(choice.charAt(1)));
+			valid = board.setX(choice.charAt(0), Character.getNumericValue(choice.charAt(1)));
+			while (!valid) { 
+				System.out.println("Invalid choice, please try again input in form 'a2' or 'A2' given choices (a,b,c,d,e,f,g,h)(1,2,3,4,5,6,7,8))");
+				System.out.print("Choice: ");
+				choice = keyboard.nextLine();
+				valid = board.setX(choice.charAt(0), Character.getNumericValue(choice.charAt(1)));
+			}
 			System.out.println("Player's Move:");
 			System.out.println(board);
 			if (board.isWinner(true)) {
@@ -90,38 +98,47 @@ public class Driver {
 				System.out.println("Computer wins.");
 				break;
 			}
+			startTime = System.currentTimeMillis();
 			optimalPair = agent.alphaBeta(board, nInf, inf, 5, 0, false, true, false);
-			board = optimalPair.getBoard();
-			depth2 = optimalPair.getDepth();
-			for (int j = depth2; j > 1; j--) {
-				board = board.getParent();
-			}
-			System.out.println("Computer's Move:");
-			System.out.println(board);
-			if (board.isWinner(true)) {
-				System.out.println("Player wins.");
+			elapsedTime = System.currentTimeMillis();
+			elapsedTime = (elapsedTime - startTime) / 1000;
+			if (elapsedTime > 20) {
+				System.out.println("Computer has taken more than 20 seconds to make a move, Player wins.");
 				break;
 			}
-			else if (board.isWinner(false)) {
-				System.out.println("Computer wins.");
-				break;
+			else {
+				board = optimalPair.getBoard();
+				depth = optimalPair.getDepth();
+				for (int j = depth; j > 1; j--) {
+					board = board.getParent();
+				}
+				System.out.println("Computer's Move:");
+				System.out.println(board);
+				if (board.isWinner(true)) {
+					System.out.println("Player wins.");
+					break;
+				}
+				else if (board.isWinner(false)) {
+					System.out.println("Computer wins.");
+					break;
+				}
 			}
-			System.out.println("depth limit " + board.getDepth());
 		}
+		keyboard.close();
 		
 /*		for (int i = 0; i < 50; i++) {
 			System.out.println("X's move");
 			board = agent.alphaBeta(board, nInf, inf, 5, 0, true, true, true).getBoard();
-			depth1 = board.getDepth();
-			for (int j = depth1; j > 1; j--) {
+			depth = board.getDepth();
+			for (int j = depth; j > 1; j--) {
 				board = board.getParent();
 			}
 			System.out.println(board);
 
 			System.out.println("O's move");
 			board = agent.alphaBeta(board, nInf, inf, 5, 0, true, false, false).getBoard();
-			depth2 = board.getDepth();
-			for (int j = depth2; j > 1; j--) {
+			depth = board.getDepth();
+			for (int j = depth; j > 1; j--) {
 				board = board.getParent();
 			}
 			System.out.println(board);
@@ -132,8 +149,8 @@ public class Driver {
 			System.out.println("O's move");
 			optimalPair = agent.alphaBeta(board, nInf, inf, 5, 0, true, false, false);
 			board = optimalPair.getBoard();
-			depth1 = optimalPair.getDepth();
-			for (int j = depth1; j > 1; j--) {
+			depth = optimalPair.getDepth();
+			for (int j = depth; j > 1; j--) {
 				board = board.getParent();
 			}
 			System.out.println(board);
@@ -149,8 +166,8 @@ public class Driver {
 			System.out.println("X's move");
 			optimalPair = agent.alphaBeta(board, nInf, inf, 5, 0, true, true, true);
 			board = optimalPair.getBoard();
-			depth2 = optimalPair.getDepth();
-			for (int j = depth2; j > 1; j--) {
+			depth = optimalPair.getDepth();
+			for (int j = depth; j > 1; j--) {
 				board = board.getParent();
 			}
 			System.out.println(board);

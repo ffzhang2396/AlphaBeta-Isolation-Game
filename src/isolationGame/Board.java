@@ -205,10 +205,12 @@ public class Board {
 	 * TRUE == X PLAYER
 	 * FALSE == O PLAYER
 	 */
-	public boolean isXValidMove(char row, int col, boolean player) {
+	public boolean isXValidMove(char row, int col/*, boolean player*/) { // testing removing boolean player
 		int rowIndex = (int) (row - 64);
-		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
-		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
+		/*int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
+		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();*/
+		int xPos = xPlayer.getRow();
+		int yPos = xPlayer.getCol();
 		int dx, dy;
 		
 		if (xPos == rowIndex) {
@@ -226,7 +228,10 @@ public class Board {
 		while ((rowIndex != xPos) || (col != yPos)) {
 			xPos += dx;
 			yPos += dy;
-			if (isHole(xPos, yPos)) {
+			if ((xPos > 8 || yPos > 8) || (xPos < 0 || yPos < 0)) {
+				return false;
+			}
+			else if (isHole(xPos, yPos)) {
 				return false;
 			}
 		}	
@@ -303,24 +308,40 @@ public class Board {
 	/*
 	 * Sets position of x player
 	 */
-	public boolean setX(char row, int col) {
+	public boolean setX(char row, int col) { // testing in progress
 		int prevRow = xPlayer.row;
 		int prevCol = xPlayer.col;
 		
-		
-		Character.toUpperCase(row);
-		if (board[row - 64][col] == '-') {
-			board[row - 64][col] = 'X';
-			
-			xPlayer.setRow(row - 64);
-			xPlayer.setCol(col);
-			
-			if (xPlayer.row != prevRow || xPlayer.col != prevCol) {
-				setHole(prevRow, prevCol);
-			}
-			return true;
+		row = Character.toUpperCase(row);
+		if (row < 65 || row > 72) {
+			System.out.println("Invalid row choice.");
+			return false;
 		}
-		return false;
+		else if (col < 1 || col > 8) {
+			System.out.println("Invalid column choice.");
+			return false;
+		}
+		else if (isXValidMove(row, col)) {
+			if (board[row - 64][col] == '-') {
+				board[row - 64][col] = 'X';
+			
+				xPlayer.setRow(row - 64);
+				xPlayer.setCol(col);
+			
+				if (xPlayer.row != prevRow || xPlayer.col != prevCol) {
+					setHole(prevRow, prevCol);
+				}
+				return true;
+			}
+			else {
+				System.out.println("Unable to move there.");
+				return false;
+			}
+		}
+		else {
+			System.out.println("Unable to move there.");
+			return false;
+		}
 	}
 
 	/*
