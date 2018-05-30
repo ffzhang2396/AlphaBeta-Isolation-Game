@@ -11,6 +11,7 @@ public class Board {
 	private OPos oPlayer = new OPos();
 	private Board parent;
 	private Board child;
+	private String move;
 	private double eval;
 	private int depth;
 
@@ -18,6 +19,7 @@ public class Board {
 	public Board() {
 		popBoard();
 		startingPosition();
+		move = "";
 		parent = null;
 		depth = 0;
 	}
@@ -76,14 +78,10 @@ public class Board {
 	 * true == X player
 	 * false == O player
 	 */
-	public List<Board> getChildren( boolean player) {
+	public List<Board> getChildren(boolean player) {
 		List<Board> children = new ArrayList<Board>();
 		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
 		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
-		//int xPos = oPlayer.getRow();
-		//int yPos = oPlayer.getCol();
-		
-		
 		int temp1 = xPos;
 		int temp2 = yPos;
 		
@@ -205,10 +203,8 @@ public class Board {
 	 * TRUE == X PLAYER
 	 * FALSE == O PLAYER
 	 */
-	public boolean isXValidMove(char row, int col/*, boolean player*/) { // testing removing boolean player
+	public boolean isXValidMove(char row, int col) { 
 		int rowIndex = (int) (row - 64);
-		/*int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
-		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();*/
 		int xPos = xPlayer.getRow();
 		int yPos = xPlayer.getCol();
 		int dx, dy;
@@ -263,7 +259,6 @@ public class Board {
 		this.parent = parent;
 	}
 	
-	
 	public int getDepth() {
 		return depth;
 	}
@@ -303,7 +298,10 @@ public class Board {
 	public int getOCol() {
 		return oPlayer.getCol();
 	}
-
+	
+	public String getMove() {
+		return move;
+	}
 
 	/*
 	 * Sets position of x player
@@ -313,6 +311,7 @@ public class Board {
 		int prevCol = xPlayer.col;
 		
 		row = Character.toUpperCase(row);
+		move = row + Integer.toString(col);
 		if (row < 65 || row > 72) {
 			System.out.println("Invalid row choice.");
 			return false;
@@ -352,7 +351,7 @@ public class Board {
 		int prevCol = oPlayer.col;
 		
 		Character.toUpperCase(row);
-
+		move = row + Integer.toString(col);
 		if (board[row - 64][col] == '-') {
 			board[row - 64][col] = 'O';
 			
@@ -493,7 +492,7 @@ public class Board {
 		
 	}
 	
-	private static class OPos  {
+	private static class OPos {
 		
 		private int row;
 		private int col;
