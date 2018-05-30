@@ -14,9 +14,9 @@ public class AiOP extends Heuristic {
 		int compSpaces = occupiedSpaces(board, false); //comp distance from walls. higher is better.
 		double distance = eDistance(board); //distance fromula. lower is better.
 		
-		double oppSpacesWeight = (1 - (oppSpaces/24)) * 25;
-		double compSpacesWeight = (compSpaces / 24) * 25;
-		double distanceWeight = (1 - (distance / 9.899494936611665)) * 50;
+		double oppSpacesWeight = (1 - (oppSpaces/24)) * 25; // favors enemies closer to walls
+		double compSpacesWeight = (compSpaces / 24) * 10; // favors having more options/moves
+		double distanceWeight = (1 - (distance / 9.899494936611665)) * 65; // favors less distance between pieces (aggressive)
 		
 		double totalWeightedEval = oppSpacesWeight + compSpacesWeight + distanceWeight;
 		

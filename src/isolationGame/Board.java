@@ -62,6 +62,17 @@ public class Board {
 	}
 	
 	/*
+	 * Serves to determine if there is a winner 
+	 * 
+	 * */
+	public boolean isWinner(boolean player) {
+		
+		if (getMoves(!player) == 0)
+			return true;
+		else
+			return false;
+	}
+	/*
 	 * true == X player
 	 * false == O player
 	 */
