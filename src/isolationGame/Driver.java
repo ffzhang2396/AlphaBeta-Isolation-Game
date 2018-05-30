@@ -27,7 +27,6 @@ public class Driver {
 		 * System.out.println(board);
 		 */
 
-		// board.setO('G', 7);
 
 /*		for (int i = 0; i < 50; i++) {
 			System.out.println("X's move");
