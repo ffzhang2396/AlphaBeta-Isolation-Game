@@ -42,8 +42,8 @@ public class Driver {
 				board = board.getParent();
 			}
 			System.out.println(board);
-		}*/
-
+		}
+*/
 		
 /*		for (int i = 0; i < 50; i++) {
 			System.out.println("O's move");

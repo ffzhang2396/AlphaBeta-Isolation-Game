@@ -35,6 +35,10 @@ public class GameAgent {
 				Pair value = alphaBeta(children.get(i), alpha, beta, depthLimit, depth + 1, !player, func, !Xplayer);
 				if (value.getScore() > bestValue.getScore()) {
 					bestValue = value;
+				} else if (value.getScore() == bestValue.getScore()) {
+					if (Math.random() > 0.5) {
+						bestValue = value;
+					}
 				}
 
 				if (alpha.getScore() < bestValue.getScore()) {
@@ -53,6 +57,10 @@ public class GameAgent {
 
 				if (value.getScore() < bestValue.getScore()) {
 					bestValue = value;
+				} else if (value.getScore() == bestValue.getScore()) {
+					if (Math.random() > 0.5) {
+						bestValue = value;
+					}
 				}
 
 				if (beta.getScore() > bestValue.getScore()) {
