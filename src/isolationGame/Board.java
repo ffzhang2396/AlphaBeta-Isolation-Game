@@ -2,8 +2,6 @@ package isolationGame;
 
 import java.util.*;
 
-
-
 public class Board {
 
 	private char[][] board = new char[9][9];
@@ -203,10 +201,10 @@ public class Board {
 	 * TRUE == X PLAYER
 	 * FALSE == O PLAYER
 	 */
-	public boolean isXValidMove(char row, int col) { 
+	public boolean isValidMove(char row, int col, boolean player) { 
 		int rowIndex = (int) (row - 64);
-		int xPos = xPlayer.getRow();
-		int yPos = xPlayer.getCol();
+		int xPos = (player) ? xPlayer.getRow() : oPlayer.getRow();
+		int yPos = (player) ? xPlayer.getCol() : oPlayer.getCol();
 		int dx, dy;
 		
 		if (xPos == rowIndex) {
@@ -233,7 +231,6 @@ public class Board {
 		}	
 		return true;	
 	}
-	
 	/*
 	 * True == X player
 	 * False == O player
@@ -306,7 +303,7 @@ public class Board {
 	/*
 	 * Sets position of x player
 	 */
-	public boolean setX(char row, int col) { // testing in progress
+	public boolean setX(char row, int col) { 
 		int prevRow = xPlayer.row;
 		int prevCol = xPlayer.col;
 		
@@ -320,7 +317,7 @@ public class Board {
 			System.out.println("Invalid column choice.");
 			return false;
 		}
-		else if (isXValidMove(row, col)) {
+		else if (isValidMove(row, col, true)) { // was originally isXValidMove
 			if (board[row - 64][col] == '-') {
 				board[row - 64][col] = 'X';
 			
@@ -328,6 +325,42 @@ public class Board {
 				xPlayer.setCol(col);
 			
 				if (xPlayer.row != prevRow || xPlayer.col != prevCol) {
+					setHole(prevRow, prevCol);
+				}
+				return true;
+			}
+			else {
+				System.out.println("Unable to move there.");
+				return false;
+			}
+		}
+		else {
+			System.out.println("Unable to move there.");
+			return false;
+		}
+	}
+	public boolean setOVersus(char row, int col) { 
+		int prevRow = oPlayer.row;
+		int prevCol = oPlayer.col;
+		
+		row = Character.toUpperCase(row);
+		move = row + Integer.toString(col);
+		if (row < 65 || row > 72) {
+			System.out.println("Invalid row choice.");
+			return false;
+		}
+		else if (col < 1 || col > 8) {
+			System.out.println("Invalid column choice.");
+			return false;
+		}
+		else if (isValidMove(row, col, false)) {
+			if (board[row - 64][col] == '-') {
+				board[row - 64][col] = 'O';
+			
+				oPlayer.setRow(row - 64);
+				oPlayer.setCol(col);
+			
+				if (oPlayer.row != prevRow || oPlayer.col != prevCol) {
 					setHole(prevRow, prevCol);
 				}
 				return true;
